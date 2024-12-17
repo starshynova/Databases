@@ -1,19 +1,14 @@
-const mysql = require('mysql');
+import { createConnection } from 'mysql2/promise';
+import { readFile } from 'fs/promises';
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'hyfuser', 
-    password: 'hyfpassword', 
-    database: 'meetup'
+const connection = await createConnection({
+  host: 'localhost',
+  user: 'hyfuser',
+  password: 'hyfpassword',
+  multipleStatements: true,
 });
 
-connection.connect((err) => {
-    if (err) {
-        console.error('Connection error', err);
-        return;
-    }
-    console.log('Connection to the database was successful');
-});
+const sqlDatabase = await readFile('meetup.sql', 'utf-8');
 
 const insertInvitee = `INSERT INTO Invitee (invitee_name, invited_by) VALUES 
     ('Kate', 'John'),
@@ -36,24 +31,12 @@ const insertMeeting = `INSERT INTO Meeting (meeting_title, starting_time, ending
     ('Discussion of new vacancies', '2024-12-18 13:00:00', '2024-12-18 14:00:00', 104),
     ('New hire discussion', '2024-12-18 15:00:00', '2024-12-18 16:00:00', 215)`;
 
-
-connection.query(insertInvitee, (err) => {
-    if (err) {
-        console.error('Insert error Invitee', err)
-    } else {console.log('Invitee successfully inserted')};
-
-connection.query(insertRoom, (err) => {
-    if (err) {
-        console.error('Insert error Room', err)
-    } else {console.log('Room successfully inserted')};
-
-connection.query(insertMeeting, (err) => {
-    if (err) {
-        console.error('Insert error Meeting', err)
-    } else {console.log('Meeting successfully inserted')};
-
+try {
+await connection.query(sqlDatabase);
+await connection.query(insertInvitee);
+await connection.query(insertRoom);
+await connection.query(insertMeeting);
 connection.end();
-});
-});
-});
-
+} catch (err) {
+    console.error('Connection error', err)
+}
