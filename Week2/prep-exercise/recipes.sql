@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS recipe;
 
 CREATE TABLE recipe (
     ID INT(6) AUTO_INCREMENT PRIMARY KEY,
-    NameRecipe VARCHAR(255) NOT NULL,
+    NameRecipe VARCHAR(255) NOT NULL UNIQUE,
     CookingTime_min INT
 );
 
@@ -22,12 +22,12 @@ CREATE TABLE ingredients (
 
 CREATE TABLE category (
     ID INT(6) AUTO_INCREMENT PRIMARY KEY,
-    Category VARCHAR(255) NOT NULL
+    Category VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE cooking_steps (
     ID INT(6) AUTO_INCREMENT PRIMARY KEY,
-    NameStep VARCHAR(255) NOT NULL
+    NameStep VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE recipe_ingredient (
@@ -50,7 +50,8 @@ CREATE TABLE recipe_category (
 CREATE TABLE recipe_cooking_steps (
     recipe_id INT(6) NOT NULL,
     cooking_steps_id INT(6) NOT NULL,
+    step_order INT(6) NOT NULL,
     FOREIGN KEY (recipe_id) REFERENCES recipe(ID) ON DELETE CASCADE,
     FOREIGN KEY (cooking_steps_id) REFERENCES cooking_steps(ID) ON DELETE CASCADE,
-    UNIQUE KEY (recipe_id, cooking_steps_id)
+    UNIQUE KEY (recipe_id, cooking_steps_id, step_order)
 );
