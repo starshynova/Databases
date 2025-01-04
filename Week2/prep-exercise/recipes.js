@@ -250,7 +250,7 @@ const insertRecipeCookingStepsTamagoyakiJapaneseOmelette = `SET @step_order := 0
 
 
 
-    const findRecipeVegetarianWithPotato = `SELECT recipe.NameRecipe FROM recipe
+    const findRecipeVegetarianWithMacaroni = `SELECT recipe.NameRecipe FROM recipe
 JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
 JOIN category ON recipe_category.category_id = category.ID
 WHERE category.Category = 'Vegetarian'
@@ -258,23 +258,23 @@ WHERE category.Category = 'Vegetarian'
       SELECT recipe.ID FROM recipe
       JOIN recipe_ingredient ON recipe.ID = recipe_ingredient.recipe_id
       JOIN ingredients ON recipe_ingredient.ingredient_id = ingredients.ID
-      WHERE ingredients.Ingredient = 'Potato'
+      WHERE ingredients.Ingredient = 'Macaroni'
   )`;
 
-const findRecipeDesertNoBake = `SELECT recipe.NameRecipe FROM recipe
+const findRecipeCakeNoBake = `SELECT recipe.NameRecipe FROM recipe
 JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
 JOIN category ON recipe_category.category_id = category.ID
-WHERE category.Category = 'Dessert'
+WHERE category.Category = 'Cake'
   AND recipe.ID IN (      
     SELECT recipe.ID FROM recipe
     JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
     JOIN category ON recipe_category.category_id = category.ID
     WHERE category.Category = 'No-Bake')`;
 
-const findRecipeJapaneseAndVegan = `SELECT recipe.NameRecipe FROM recipe
+const findRecipeJapaneseAndVegetarian = `SELECT recipe.NameRecipe FROM recipe
 JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
 JOIN category ON recipe_category.category_id = category.ID
-WHERE category.Category IN ('Japanese', 'Vegan')
+WHERE category.Category IN ('Japanese', 'Vegetarian')
     GROUP BY recipe.NameRecipe
     HAVING COUNT(DISTINCT category.Category) = 2`;
 
@@ -343,15 +343,15 @@ catch (err) {
 }
 
 try {
-const [resultFindRecipeVegetarianWithPotato] = 
-    await connection.query(findRecipeVegetarianWithPotato);
-console.log('findRecipeVegetarianWithPotato', resultFindRecipeVegetarianWithPotato);
-const [resultFindRecipeDesertNoBake] = 
-    await connection.query(findRecipeDesertNoBake);
-console.log('resultFindRecipeDesertNoBake', resultFindRecipeDesertNoBake);
-const [resultFindRecipeJapaneseAndVegan] = 
-    await connection.query(findRecipeJapaneseAndVegan);
-console.log('resultFindRecipeJapaneseAndVegan', resultFindRecipeJapaneseAndVegan);
+const [resultFindRecipeVegetarianWithMacaroni] = 
+    await connection.query(findRecipeVegetarianWithMacaroni);
+console.log('findRecipeVegetarianWithMacaroni', resultFindRecipeVegetarianWithMacaroni);
+const [resultFindRecipeCakeNoBake] = 
+    await connection.query(findRecipeCakeNoBake);
+console.log('resultFindRecipeCakeNoBake', resultFindRecipeCakeNoBake);
+const [resultFindRecipeJapaneseAndVegetarian] = 
+    await connection.query(findRecipeJapaneseAndVegetarian);
+console.log('resultFindRecipeJapaneseAndVegetarian', resultFindRecipeJapaneseAndVegetarian);
 } catch (err) {
     console.error('Connection error Find Query', err)
 }
