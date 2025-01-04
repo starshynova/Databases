@@ -249,6 +249,36 @@ const insertRecipeCookingStepsTamagoyakiJapaneseOmelette = `SET @step_order := 0
     ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Remove pan from fire'), @step_order := @step_order + 1)`;
 
 
+
+    const findRecipeVegetarianWithPotato = `SELECT recipe.NameRecipe FROM recipe
+JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
+JOIN category ON recipe_category.category_id = category.ID
+WHERE category.Category = 'Vegetarian'
+  AND recipe.ID IN (
+      SELECT recipe.ID FROM recipe
+      JOIN recipe_ingredient ON recipe.ID = recipe_ingredient.recipe_id
+      JOIN ingredients ON recipe_ingredient.ingredient_id = ingredients.ID
+      WHERE ingredients.Ingredient = 'Potato'
+  )`;
+
+const findRecipeDesertNoBake = `SELECT recipe.NameRecipe FROM recipe
+JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
+JOIN category ON recipe_category.category_id = category.ID
+WHERE category.Category = 'Dessert'
+  AND recipe.ID IN (      
+    SELECT recipe.ID FROM recipe
+    JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
+    JOIN category ON recipe_category.category_id = category.ID
+    WHERE category.Category = 'No-Bake')`;
+
+const findRecipeJapaneseAndVegan = `SELECT recipe.NameRecipe FROM recipe
+JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
+JOIN category ON recipe_category.category_id = category.ID
+WHERE category.Category IN ('Japanese', 'Vegan')
+    GROUP BY recipe.NameRecipe
+    HAVING COUNT(DISTINCT category.Category) = 2`;
+
+
 try {
   await connection.query(sqlDatabase);
   await connection.query(insertRecipe);
@@ -310,6 +340,20 @@ try {
 }
 catch (err) {
     console.error('Connection error Tamagoyaki Japanese Omelette', err)
+}
+
+try {
+const [resultFindRecipeVegetarianWithPotato] = 
+    await connection.query(findRecipeVegetarianWithPotato);
+console.log('findRecipeVegetarianWithPotato', resultFindRecipeVegetarianWithPotato);
+const [resultFindRecipeDesertNoBake] = 
+    await connection.query(findRecipeDesertNoBake);
+console.log('resultFindRecipeDesertNoBake', resultFindRecipeDesertNoBake);
+const [resultFindRecipeJapaneseAndVegan] = 
+    await connection.query(findRecipeJapaneseAndVegan);
+console.log('resultFindRecipeJapaneseAndVegan', resultFindRecipeJapaneseAndVegan);
+} catch (err) {
+    console.error('Connection error Find Query', err)
 }
 
 finally {
