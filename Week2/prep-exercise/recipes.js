@@ -10,28 +10,28 @@ const connection = await createConnection({
 
 const sqlDatabase = await readFile('recipes.sql', 'utf-8');
 
-const insertRecipe = `INSERT INTO recipe (NameRecipe, CookingTime_min) VALUES 
+const insertRecipe = `INSERT INTO Recipe (RecipeName, CookingTime_min) VALUES 
     ('Lemon tart', 40),
     ('Cowboy pie', 90)`;
 
-const insertIngredients = `INSERT INTO ingredients (Ingredient) VALUES
+const insertIngredient = `INSERT INTO Ingredient (IngredientName) VALUES
     ('eggs'),
     ('plain flour'),
     ('sugar'),
     ('potato'),
     ('onion')`;
 
-const insertCategory = `INSERT INTO category (Category) VALUES
+const insertCategory = `INSERT INTO Category (CategoryName) VALUES
     ('Vegan'),
     ('Meat'),
     ('Dessert')`;
 
-const insertCookingSteps = `INSERT INTO cooking_steps (NameStep) VALUES
+const insertCookingStep = `INSERT INTO CookingStep (CookingStepName) VALUES
     ('Prepare all the necessary groceries'),
     ('Bake for 40 minutes'),
     ('Bake for 90 minutes')`;
 
-const insertRecipeIngredients = `INSERT INTO recipe_ingredient (recipe_id, ingredient_id, NeededAmount) VALUES
+const insertRecipeIngredient = `INSERT INTO Recipe_Ingredient (RecipeId, IngredientId, NeededAmount) VALUES
     (1, 1, '3'),
     (1, 2, '120 g'),
     (1, 3, '200 g'),
@@ -39,12 +39,12 @@ const insertRecipeIngredients = `INSERT INTO recipe_ingredient (recipe_id, ingre
     (2, 4, '4'),
     (2, 5, '1')`;
 
-const insertRecipeCategory = `INSERT INTO recipe_category (recipe_id, category_id) VALUES
+const insertRecipeCategory = `INSERT INTO Recipe_Category (RecipeId, CategoryId) VALUES
     (1, 1),
     (1, 3),
     (2, 2)`;
 
-const insertRecipeCookingSteps = `INSERT INTO recipe_cooking_steps (recipe_id, cooking_steps_id, step_order) VALUES
+const insertRecipeCookingStep = `INSERT INTO Recipe_CookingStep (RecipeId, CookingStepId, StepOrder) VALUES
     (1, 1, 1),
     (1, 3, 2),
     (2, 1, 1),
@@ -52,107 +52,107 @@ const insertRecipeCookingSteps = `INSERT INTO recipe_cooking_steps (recipe_id, c
 
 
 
-const insertRecipeCheesecake = `INSERT INTO recipe (NameRecipe, CookingTime_min) VALUES
+const insertRecipeCheesecake = `INSERT INTO Recipe (RecipeName, CookingTime_min) VALUES
     ('No-Bake Cheesecake', 60)
-    ON DUPLICATE KEY UPDATE NameRecipe=NameRecipe`;
+    ON DUPLICATE KEY UPDATE RecipeName=RecipeName`;
 
-const insertCategoryCheesecake = `INSERT INTO category (Category) VALUES
+const insertCategoryCheesecake = `INSERT INTO Category (CategoryName) VALUES
     ('Cake'),
     ('No-Bake'),
     ('Vegetarian')
-    ON DUPLICATE KEY UPDATE Category=Category`;  
+    ON DUPLICATE KEY UPDATE CategoryName=CategoryName`;  
 
-const insertIngredientsCheesecake = `INSERT INTO ingredients (Ingredient) VALUES
+const insertIngredientCheesecake = `INSERT INTO Ingredient (IngredientName) VALUES
     ('Condensed milk'), 
     ('Cream Cheese'),
     ('Lemon Juice'),
     ('Pie Crust'),
     ('Cherry Jam')
-    ON DUPLICATE KEY UPDATE Ingredient=Ingredient`;  
+    ON DUPLICATE KEY UPDATE IngredientName=IngredientName`;  
 
-const insertCookingStepsCheesecake = `INSERT INTO cooking_steps (NameStep) VALUES
+const insertCookingStepCheesecake = `INSERT INTO CookingStep (CookingStepName) VALUES
     ('Beat Cream Cheese'),
     ('Add Condensed Milk and blend'),
     ('Add Lemon Juice and blend'),
     ('Add the mix to the pie crust'),
     ('Spread the Cherry Jam'),
     ('Place in refrigerator for 3h')
-    ON DUPLICATE KEY UPDATE NameStep=NameStep`;
+    ON DUPLICATE KEY UPDATE CookingStepName=CookingStepName`;
 
-const insertRecipeIngredientsCheesecake = `INSERT INTO recipe_ingredient (recipe_id, ingredient_id, NeededAmount) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM ingredients WHERE Ingredient = 'Condensed milk'), '200 ml'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM ingredients WHERE Ingredient = 'Cream Cheese'), '200 g'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM ingredients WHERE Ingredient = 'Lemon Juice'), '1 tbsp'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM ingredients WHERE Ingredient = 'Pie Crust'), '1'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM ingredients WHERE Ingredient = 'Cherry Jam'), '100 g')`;
+const insertRecipeIngredientCheesecake = `INSERT INTO Recipe_Ingredient (RecipeId, IngredientId, NeededAmount) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Condensed milk'), '200 ml'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Cream Cheese'), '200 g'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Lemon Juice'), '1 tbsp'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Pie Crust'), '1'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Cherry Jam'), '100 g')`;
 
-const insertRecipeCategoryCheesecake = `INSERT INTO recipe_category (recipe_id, category_id) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM category WHERE Category = 'Cake')),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM category WHERE Category = 'No-Bake')),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM category WHERE Category = 'Vegetarian'))`;
+const insertRecipeCategoryCheesecake = `INSERT INTO Recipe_Category (RecipeId, CategoryId) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT CategoryId FROM Category WHERE CategoryName = 'Cake')),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT CategoryId FROM Category WHERE CategoryName = 'No-Bake')),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT CategoryId FROM Category WHERE CategoryName = 'Vegetarian'))`;
 
-const insertRecipeCookingStepsCheesecake = `SET @step_order := 0;
-    INSERT INTO recipe_cooking_steps (recipe_id, cooking_steps_id, step_order) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Beat Cream Cheese'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add Condensed Milk and blend'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add Lemon Juice and blend'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add the mix to the pie crust'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Spread the Cherry Jam'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'No-Bake Cheesecake'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Place in refrigerator for 3h'), @step_order := @step_order + 1)`;
+const insertRecipeCookingStepCheesecake = `SET @StepOrder := 0;
+    INSERT INTO Recipe_CookingStep (RecipeId, CookingStepId, StepOrder) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Beat Cream Cheese'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add Condensed Milk and blend'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add Lemon Juice and blend'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add the mix to the pie crust'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Spread the Cherry Jam'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'No-Bake Cheesecake'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Place in refrigerator for 3h'), @StepOrder := @StepOrder + 1)`;
 
-const insertRecipeRoastedBrusselsSprouts = `INSERT INTO recipe (NameRecipe, CookingTime_min) VALUES
+const insertRecipeRoastedBrusselsSprouts = `INSERT INTO Recipe (RecipeName, CookingTime_min) VALUES
     ('Roasted Brussels Sprouts', 45)
-    ON DUPLICATE KEY UPDATE NameRecipe=NameRecipe`;
+    ON DUPLICATE KEY UPDATE RecipeName=RecipeName`;
 
-const insertCategoryRoastedBrusselsSprouts = `INSERT INTO category (Category) VALUES
+const insertCategoryRoastedBrusselsSprouts = `INSERT INTO Category (CategoryName) VALUES
     ('Vegan'),
     ('Gluten-Free')
-    ON DUPLICATE KEY UPDATE Category=Category`;
+    ON DUPLICATE KEY UPDATE CategoryName=CategoryName`;
 
-const insertIngredientsRoastedBrusselsSprouts = `INSERT INTO ingredients (Ingredient) VALUES
+const insertIngredientRoastedBrusselsSprouts = `INSERT INTO Ingredient (IngredientName) VALUES
     ('Brussels Sprouts'),
     ('Lemon juice'),
     ('Sesame seeds'),
     ('Pepper'),
     ('Salt'),
     ('Olive oil')
-    ON DUPLICATE KEY UPDATE Ingredient=Ingredient`;
+    ON DUPLICATE KEY UPDATE IngredientName=IngredientName`;
 
-const insertCookingStepsRoastedBrusselsSprouts = `INSERT INTO cooking_steps (NameStep) VALUES
+const insertCookingStepRoastedBrusselsSprouts = `INSERT INTO CookingStep (CookingStepName) VALUES
     ('Preheat the oven'),
-    ('Mix the ingredients in a bowl'),
+    ('Mix the Ingredient in a bowl'),
     ('Spread the mix on baking sheet'),
     ('Bake for 30 minutes')
-    ON DUPLICATE KEY UPDATE NameStep=NameStep`;
+    ON DUPLICATE KEY UPDATE CookingStepName=CookingStepName`;
 
-const insertRecipeIngredientsRoastedBrusselsSprouts = `INSERT INTO recipe_ingredient (recipe_id, ingredient_id, NeededAmount) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM ingredients WHERE Ingredient = 'Brussels Sprouts'), '500 g'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM ingredients WHERE Ingredient = 'Lemon juice'), '100 ml'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM ingredients WHERE Ingredient = 'Sesame seeds'), '1 tbsp'),   
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM ingredients WHERE Ingredient = 'Pepper'), '1 tsp'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM ingredients WHERE Ingredient = 'Salt'), '1 tsp'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM ingredients WHERE Ingredient = 'Olive oil'), '2 tbsp')`;
+const insertRecipeIngredientRoastedBrusselsSprouts = `INSERT INTO Recipe_Ingredient (RecipeId, IngredientId, NeededAmount) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Brussels Sprouts'), '500 g'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Lemon juice'), '100 ml'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Sesame seeds'), '1 tbsp'),   
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Pepper'), '1 tsp'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Salt'), '1 tsp'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Olive oil'), '2 tbsp')`;
 
-const insertRecipeCategoryRoastedBrusselsSprouts = `INSERT INTO recipe_category (recipe_id, category_id) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM category WHERE Category = 'Vegan')),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM category WHERE Category = 'Gluten-Free'))`;
+const insertRecipeCategoryRoastedBrusselsSprouts = `INSERT INTO Recipe_Category (RecipeId, CategoryId) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT CategoryId FROM Category WHERE CategoryName = 'Vegan')),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT CategoryId FROM Category WHERE CategoryName = 'Gluten-Free'))`;
 
-const insertRecipeCookingStepsRoastedBrusselsSprouts = `SET @step_order := 0;
-    INSERT INTO recipe_cooking_steps (recipe_id, cooking_steps_id, step_order) VALUES   
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Preheat the oven'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Mix the ingredients in a bowl'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Spread the mix on baking sheet'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Roasted Brussels Sprouts'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Bake for 30 minutes'), @step_order := @step_order + 1)`;
+const insertRecipeCookingStepRoastedBrusselsSprouts = `SET @StepOrder := 0;
+    INSERT INTO Recipe_CookingStep (RecipeId, CookingStepId, StepOrder) VALUES   
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Preheat the oven'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Mix the Ingredient in a bowl'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Spread the mix on baking sheet'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Roasted Brussels Sprouts'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Bake for 30 minutes'), @StepOrder := @StepOrder + 1)`;
 
-const insertRecipeMacCheese = `INSERT INTO recipe (NameRecipe, CookingTime_min) VALUES
+const insertRecipeMacCheese = `INSERT INTO Recipe (RecipeName, CookingTime_min) VALUES
     ('Mac and Cheese', 30)
-    ON DUPLICATE KEY UPDATE NameRecipe=NameRecipe`;
+    ON DUPLICATE KEY UPDATE RecipeName=RecipeName`;
 
-const insertCategoryMacCheese = `INSERT INTO category (Category) VALUES
+const insertCategoryMacCheese = `INSERT INTO Category (CategoryName) VALUES
     ('Vegetarian')
-    ON DUPLICATE KEY UPDATE Category=Category`;
+    ON DUPLICATE KEY UPDATE CategoryName=CategoryName`;
 
-const insertIngredientsMacCheese = `INSERT INTO ingredients (Ingredient) VALUES
+const insertIngredientMacCheese = `INSERT INTO Ingredient (IngredientName) VALUES
     ('Macaroni'),
     ('Butter'),
     ('Flour'),
@@ -160,9 +160,9 @@ const insertIngredientsMacCheese = `INSERT INTO ingredients (Ingredient) VALUES
     ('Pepper'),
     ('Milk'),
     ('Shredded Cheddar cheese')
-    ON DUPLICATE KEY UPDATE Ingredient=Ingredient`;
+    ON DUPLICATE KEY UPDATE IngredientName=IngredientName`;
 
-const insertCookingStepsMacCheese = `INSERT INTO cooking_steps (NameStep) VALUES
+const insertCookingStepMacCheese = `INSERT INTO CookingStep (CookingStepName) VALUES
     ('Cook Macaroni for 8 minutes'),
     ('Melt butter in a saucepan'),
     ('Add flour, salt, pepper and mix'), 
@@ -170,48 +170,48 @@ const insertCookingStepsMacCheese = `INSERT INTO cooking_steps (NameStep) VALUES
     ('Cook until mix is smooth'),
     ('Add cheddar cheese'),
     ('Add the macaroni')
-    ON DUPLICATE KEY UPDATE NameStep=NameStep`;
+    ON DUPLICATE KEY UPDATE CookingStepName=CookingStepName`;
 
-const insertRecipeIngredientsMacCheese = `INSERT INTO recipe_ingredient (recipe_id, ingredient_id, NeededAmount) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM ingredients WHERE Ingredient = 'Macaroni'), '200 g'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM ingredients WHERE Ingredient = 'Butter'), '50 g'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM ingredients WHERE Ingredient = 'Flour'), '50 g'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM ingredients WHERE Ingredient = 'Salt'), '1 tsp'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM ingredients WHERE Ingredient = 'Pepper'), '1 tsp'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM ingredients WHERE Ingredient = 'Milk'), '500 ml'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM ingredients WHERE Ingredient = 'Shredded Cheddar cheese'), '200 g')`;
+const insertRecipeIngredientMacCheese = `INSERT INTO Recipe_Ingredient (RecipeId, IngredientId, NeededAmount) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Macaroni'), '200 g'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Butter'), '50 g'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Flour'), '50 g'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Salt'), '1 tsp'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Pepper'), '1 tsp'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Milk'), '500 ml'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Shredded Cheddar cheese'), '200 g')`;
 
-const insertRecipeCategoryMacCheese = `INSERT INTO recipe_category (recipe_id, category_id) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM category WHERE Category = 'Vegetarian'))`;
+const insertRecipeCategoryMacCheese = `INSERT INTO Recipe_Category (RecipeId, CategoryId) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT CategoryId FROM Category WHERE CategoryName = 'Vegetarian'))`;
 
-const insertRecipeCookingStepsMacCheese = `SET @step_order := 0;
-    INSERT INTO recipe_cooking_steps (recipe_id, cooking_steps_id, step_order) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Cook Macaroni for 8 minutes'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Melt butter in a saucepan'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add flour, salt, pepper and mix'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add Milk and mix'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Cook until mix is smooth'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add cheddar cheese'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Mac and Cheese'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add the macaroni'), @step_order := @step_order + 1)`;
+const insertRecipeCookingStepMacCheese = `SET @StepOrder := 0;
+    INSERT INTO Recipe_CookingStep (RecipeId, CookingStepId, StepOrder) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Cook Macaroni for 8 minutes'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Melt butter in a saucepan'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add flour, salt, pepper and mix'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add Milk and mix'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Cook until mix is smooth'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add cheddar cheese'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Mac and Cheese'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add the macaroni'), @StepOrder := @StepOrder + 1)`;
     
-const insertRecipeTamagoyakiJapaneseOmelette = `INSERT INTO recipe (NameRecipe, CookingTime_min) VALUES
+const insertRecipeTamagoyakiJapaneseOmelette = `INSERT INTO Recipe (RecipeName, CookingTime_min) VALUES
     ('Tamagoyaki Japanese Omelette', 20)
-    ON DUPLICATE KEY UPDATE NameRecipe=NameRecipe`;
+    ON DUPLICATE KEY UPDATE RecipeName=RecipeName`;
 
-const insertCategoryTamagoyakiJapaneseOmelette = `INSERT INTO category (Category) VALUES
+const insertCategoryTamagoyakiJapaneseOmelette = `INSERT INTO Category (CategoryName) VALUES
     ('Vegetarian'),
     ('Japanese')
-    ON DUPLICATE KEY UPDATE Category=Category`;
+    ON DUPLICATE KEY UPDATE CategoryName=CategoryName`;
 
-const insertIngredientsTamagoyakiJapaneseOmelette = `INSERT INTO ingredients (Ingredient) VALUES
+const insertIngredientTamagoyakiJapaneseOmelette = `INSERT INTO Ingredient (IngredientName) VALUES
     ('Eggs'),
     ('Soy sauce'),
     ('Sugar'),
     ('Salt'),
     ('Olive Oil')
-    ON DUPLICATE KEY UPDATE Ingredient=Ingredient`;
+    ON DUPLICATE KEY UPDATE IngredientName=IngredientName`;
 
-const insertCookingStepsTamagoyakiJapaneseOmelette = `INSERT INTO cooking_steps (NameStep) VALUES  
+const insertCookingStepTamagoyakiJapaneseOmelette = `INSERT INTO CookingStep (CookingStepName) VALUES  
     ('Beat the eggs'),
     ('Add soya sauce, sugar and salt'),
     ('Add oil to a sauce pan'), 
@@ -222,84 +222,84 @@ const insertCookingStepsTamagoyakiJapaneseOmelette = `INSERT INTO cooking_steps 
     ('Add some mix to the sauce pan'),
     ('Let is cook for 1'),
     ('Remove pan from fire')
-    ON DUPLICATE KEY UPDATE NameStep=NameStep`;
+    ON DUPLICATE KEY UPDATE CookingStepName=CookingStepName`;
 
-const insertRecipeIngredientsTamagoyakiJapaneseOmelette = `INSERT INTO recipe_ingredient (recipe_id, ingredient_id, NeededAmount) VALUES    
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM ingredients WHERE Ingredient = 'Eggs'), '4'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM ingredients WHERE Ingredient = 'Soy sauce'), '1 tbsp'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM ingredients WHERE Ingredient = 'Sugar'), '1 tsp'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM ingredients WHERE Ingredient = 'Salt'), '1 tsp'),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM ingredients WHERE Ingredient = 'Olive Oil'), '1 tbsp')`;
+const insertRecipeIngredientTamagoyakiJapaneseOmelette = `INSERT INTO Recipe_Ingredient (RecipeId, IngredientId, NeededAmount) VALUES    
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Eggs'), '4'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Soy sauce'), '1 tbsp'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Sugar'), '1 tsp'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Salt'), '1 tsp'),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT IngredientId FROM Ingredient WHERE IngredientName = 'Olive Oil'), '1 tbsp')`;
 
-const insertRecipeCategoryTamagoyakiJapaneseOmelette = `INSERT INTO recipe_category (recipe_id, category_id) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM category WHERE Category = 'Vegetarian')),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM category WHERE Category = 'Japanese'))`;
+const insertRecipeCategoryTamagoyakiJapaneseOmelette = `INSERT INTO Recipe_Category (RecipeId, CategoryId) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CategoryId FROM Category WHERE CategoryName = 'Vegetarian')),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CategoryId FROM Category WHERE CategoryName = 'Japanese'))`;
     
-const insertRecipeCookingStepsTamagoyakiJapaneseOmelette = `SET @step_order := 0;
-    INSERT INTO recipe_cooking_steps (recipe_id, cooking_steps_id, step_order) VALUES
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Beat the eggs'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add soya sauce, sugar and salt'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add oil to a sauce pan'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Bring to medium heat'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add some mix to the sauce pan'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Let is cook for 1'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add oil to a sauce pan'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Add some mix to the sauce pan'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Let is cook for 1'), @step_order := @step_order + 1),
-    ((SELECT ID FROM recipe WHERE NameRecipe = 'Tamagoyaki Japanese Omelette'), (SELECT ID FROM cooking_steps WHERE NameStep = 'Remove pan from fire'), @step_order := @step_order + 1)`;
+const insertRecipeCookingStepTamagoyakiJapaneseOmelette = `SET @StepOrder := 0;
+    INSERT INTO Recipe_CookingStep (RecipeId, CookingStepId, StepOrder) VALUES
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Beat the eggs'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add soya sauce, sugar and salt'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add oil to a sauce pan'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Bring to medium heat'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add some mix to the sauce pan'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Let is cook for 1'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add oil to a sauce pan'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Add some mix to the sauce pan'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Let is cook for 1'), @StepOrder := @StepOrder + 1),
+    ((SELECT RecipeID FROM Recipe WHERE RecipeName = 'Tamagoyaki Japanese Omelette'), (SELECT CookingStepId FROM CookingStep WHERE CookingStepName = 'Remove pan from fire'), @StepOrder := @StepOrder + 1)`;
 
 
 
-    const findRecipeVegetarianWithMacaroni = `SELECT recipe.NameRecipe FROM recipe
-JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
-JOIN category ON recipe_category.category_id = category.ID
-WHERE category.Category = 'Vegetarian'
-  AND recipe.ID IN (
-      SELECT recipe.ID FROM recipe
-      JOIN recipe_ingredient ON recipe.ID = recipe_ingredient.recipe_id
-      JOIN ingredients ON recipe_ingredient.ingredient_id = ingredients.ID
-      WHERE ingredients.Ingredient = 'Macaroni'
+const findRecipeVegetarianWithMacaroni = `SELECT Recipe.RecipeName FROM Recipe
+JOIN Recipe_Category ON Recipe.RecipeId = Recipe_Category.RecipeId
+JOIN Category ON Recipe_Category.CategoryId = Category.CategoryId
+WHERE Category.CategoryName = 'Vegetarian'
+  AND Recipe.RecipeId IN (
+      SELECT Recipe.RecipeId FROM Recipe
+      JOIN Recipe_Ingredient ON Recipe.RecipeId = Recipe_Ingredient.RecipeId
+      JOIN Ingredient ON Recipe_Ingredient.IngredientId = Ingredient.IngredientId
+      WHERE Ingredient.IngredientName = 'Macaroni'
   )`;
 
-const findRecipeCakeNoBake = `SELECT recipe.NameRecipe FROM recipe
-JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
-JOIN category ON recipe_category.category_id = category.ID
-WHERE category.Category = 'Cake'
-  AND recipe.ID IN (      
-    SELECT recipe.ID FROM recipe
-    JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
-    JOIN category ON recipe_category.category_id = category.ID
-    WHERE category.Category = 'No-Bake')`;
+const findRecipeCakeNoBake = `SELECT Recipe.RecipeName FROM Recipe
+JOIN Recipe_Category ON Recipe.RecipeId = Recipe_Category.RecipeId
+JOIN Category ON Recipe_Category.CategoryId = Category.CategoryId
+WHERE Category.CategoryName = 'Cake'
+  AND Recipe.RecipeId IN (      
+    SELECT Recipe.RecipeId FROM Recipe
+    JOIN Recipe_Category ON Recipe.RecipeId = Recipe_Category.RecipeId
+    JOIN Category ON Recipe_Category.CategoryId = Category.CategoryId
+    WHERE Category.CategoryName = 'No-Bake')`;
 
-const findRecipeJapaneseAndVegetarian = `SELECT recipe.NameRecipe FROM recipe
-JOIN recipe_category ON recipe.ID = recipe_category.recipe_id
-JOIN category ON recipe_category.category_id = category.ID
-WHERE category.Category IN ('Japanese', 'Vegetarian')
-    GROUP BY recipe.NameRecipe
-    HAVING COUNT(DISTINCT category.Category) = 2`;
+const findRecipeJapaneseAndVegetarian = `SELECT Recipe.RecipeName FROM Recipe
+JOIN Recipe_Category ON Recipe.RecipeId = Recipe_Category.RecipeId
+JOIN Category ON Recipe_Category.CategoryId = Category.CategoryId
+WHERE Category.CategoryName IN ('Japanese', 'Vegetarian')
+    GROUP BY Recipe.RecipeName
+    HAVING COUNT(DISTINCT Category.CategoryName) = 2`;
 
 
 try {
   await connection.query(sqlDatabase);
   await connection.query(insertRecipe);
-  await connection.query(insertIngredients);
+  await connection.query(insertIngredient);
   await connection.query(insertCategory);
-  await connection.query(insertCookingSteps);
-  await connection.query(insertRecipeIngredients);
+  await connection.query(insertCookingStep);
+  await connection.query(insertRecipeIngredient);
   await connection.query(insertRecipeCategory);
-  await connection.query(insertRecipeCookingSteps);
+  await connection.query(insertRecipeCookingStep);
 } catch (err) {
-    console.error('Connection error main recipes', err)
+    console.error('Connection error main Recipes', err)
 } 
 
 try {
   await connection.query(insertRecipeCheesecake);
   await connection.query(insertCategoryCheesecake);
-  await connection.query(insertIngredientsCheesecake);
-  await connection.query(insertCookingStepsCheesecake);
-  await connection.query(insertRecipeIngredientsCheesecake);
+  await connection.query(insertIngredientCheesecake);
+  await connection.query(insertCookingStepCheesecake);
+  await connection.query(insertRecipeIngredientCheesecake);
   await connection.query(insertRecipeCategoryCheesecake);
-  await connection.query(insertRecipeCookingStepsCheesecake);
+  await connection.query(insertRecipeCookingStepCheesecake);
 } catch (err) {
     console.error('Connection error Cheesecake', err)
 }
@@ -307,11 +307,11 @@ try {
 try {
     await connection.query(insertRecipeRoastedBrusselsSprouts);
     await connection.query(insertCategoryRoastedBrusselsSprouts);
-    await connection.query(insertIngredientsRoastedBrusselsSprouts);
-    await connection.query(insertCookingStepsRoastedBrusselsSprouts);
-    await connection.query(insertRecipeIngredientsRoastedBrusselsSprouts);
+    await connection.query(insertIngredientRoastedBrusselsSprouts);
+    await connection.query(insertCookingStepRoastedBrusselsSprouts);
+    await connection.query(insertRecipeIngredientRoastedBrusselsSprouts);
     await connection.query(insertRecipeCategoryRoastedBrusselsSprouts);
-    await connection.query(insertRecipeCookingStepsRoastedBrusselsSprouts);
+    await connection.query(insertRecipeCookingStepRoastedBrusselsSprouts);
 } catch (err) {
     console.error('Connection error Roasted Brussels Sprouts', err)
 }
@@ -319,11 +319,11 @@ try {
 try {
     await connection.query(insertRecipeMacCheese);
     await connection.query(insertCategoryMacCheese);
-    await connection.query(insertIngredientsMacCheese);
-    await connection.query(insertCookingStepsMacCheese);
-    await connection.query(insertRecipeIngredientsMacCheese);
+    await connection.query(insertIngredientMacCheese);
+    await connection.query(insertCookingStepMacCheese);
+    await connection.query(insertRecipeIngredientMacCheese);
     await connection.query(insertRecipeCategoryMacCheese);
-    await connection.query(insertRecipeCookingStepsMacCheese);
+    await connection.query(insertRecipeCookingStepMacCheese);
 }
 catch (err) {
     console.error('Connection error Mac and Cheese', err)
@@ -332,11 +332,11 @@ catch (err) {
 try {
     await connection.query(insertRecipeTamagoyakiJapaneseOmelette);
     await connection.query(insertCategoryTamagoyakiJapaneseOmelette);
-    await connection.query(insertIngredientsTamagoyakiJapaneseOmelette);
-    await connection.query(insertCookingStepsTamagoyakiJapaneseOmelette);
-    await connection.query(insertRecipeIngredientsTamagoyakiJapaneseOmelette);
+    await connection.query(insertIngredientTamagoyakiJapaneseOmelette);
+    await connection.query(insertCookingStepTamagoyakiJapaneseOmelette);
+    await connection.query(insertRecipeIngredientTamagoyakiJapaneseOmelette);
     await connection.query(insertRecipeCategoryTamagoyakiJapaneseOmelette);
-    await connection.query(insertRecipeCookingStepsTamagoyakiJapaneseOmelette);
+    await connection.query(insertRecipeCookingStepTamagoyakiJapaneseOmelette);
 }
 catch (err) {
     console.error('Connection error Tamagoyaki Japanese Omelette', err)

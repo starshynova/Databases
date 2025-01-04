@@ -1,57 +1,57 @@
-CREATE DATABASE IF NOT EXISTS recipes_week2;
-USE recipes_week2;
+CREATE DATABASE IF NOT EXISTS Recipes_database_week2;
+USE Recipes_database_week2;
 
-DROP TABLE IF EXISTS recipe_cooking_steps;
-DROP TABLE IF EXISTS recipe_category;
-DROP TABLE IF EXISTS recipe_ingredient;
-DROP TABLE IF EXISTS cooking_steps;
-DROP TABLE IF EXISTS category;
-DROP TABLE IF EXISTS ingredients;
-DROP TABLE IF EXISTS recipe;
+DROP TABLE IF EXISTS Recipe_CookingStep;
+DROP TABLE IF EXISTS Recipe_Category;
+DROP TABLE IF EXISTS Recipe_Ingredient;
+DROP TABLE IF EXISTS CookingStep;
+DROP TABLE IF EXISTS Category;
+DROP TABLE IF EXISTS Ingredient;
+DROP TABLE IF EXISTS Recipe;
 
-CREATE TABLE recipe (
-    ID INT(6) AUTO_INCREMENT PRIMARY KEY,
-    NameRecipe VARCHAR(255) NOT NULL UNIQUE,
+CREATE TABLE Recipe (
+    RecipeId INT(6) AUTO_INCREMENT PRIMARY KEY,
+    RecipeName VARCHAR(255) NOT NULL UNIQUE,
     CookingTime_min INT
 );
 
-CREATE TABLE ingredients (
-    ID INT(6) AUTO_INCREMENT PRIMARY KEY,
-    Ingredient VARCHAR(255) NOT NULL UNIQUE
+CREATE TABLE Ingredient (
+    IngredientId INT(6) AUTO_INCREMENT PRIMARY KEY,
+    IngredientName VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE category (
-    ID INT(6) AUTO_INCREMENT PRIMARY KEY,
-    Category VARCHAR(255) NOT NULL UNIQUE
+CREATE TABLE Category (
+    CategoryId INT(6) AUTO_INCREMENT PRIMARY KEY,
+    CategoryName VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE cooking_steps (
-    ID INT(6) AUTO_INCREMENT PRIMARY KEY,
-    NameStep VARCHAR(255) NOT NULL UNIQUE
+CREATE TABLE CookingStep (
+    CookingStepId INT(6) AUTO_INCREMENT PRIMARY KEY,
+    CookingStepName VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE recipe_ingredient (
-    recipe_id INT(6) NOT NULL,
-    ingredient_id INT(6) NOT NULL,
+CREATE TABLE Recipe_Ingredient (
+    RecipeId INT(6) NOT NULL,
+    IngredientId INT(6) NOT NULL,
     NeededAmount VARCHAR(100),
-    FOREIGN KEY (recipe_id) REFERENCES recipe(ID) ON DELETE CASCADE,
-    FOREIGN KEY (ingredient_id) REFERENCES ingredients(ID) ON DELETE CASCADE,
-    UNIQUE KEY (recipe_id, ingredient_id)
+    FOREIGN KEY (RecipeId) REFERENCES Recipe(RecipeId) ON DELETE CASCADE,
+    FOREIGN KEY (IngredientId) REFERENCES Ingredient(IngredientId) ON DELETE CASCADE,
+    UNIQUE KEY (RecipeId, IngredientId)
 );
 
-CREATE TABLE recipe_category (
-    recipe_id INT(6) NOT NULL,
-    category_id INT(6) NOT NULL,
-    FOREIGN KEY (recipe_id) REFERENCES recipe(ID) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES category(ID) ON DELETE CASCADE,
-    UNIQUE KEY (recipe_id, category_id)
+CREATE TABLE Recipe_Category (
+    RecipeId INT(6) NOT NULL,
+    CategoryId INT(6) NOT NULL,
+    FOREIGN KEY (RecipeId) REFERENCES Recipe(RecipeId) ON DELETE CASCADE,
+    FOREIGN KEY (CategoryId) REFERENCES Category(CategoryId) ON DELETE CASCADE,
+    UNIQUE KEY (RecipeId, CategoryId)
 );
 
-CREATE TABLE recipe_cooking_steps (
-    recipe_id INT(6) NOT NULL,
-    cooking_steps_id INT(6) NOT NULL,
-    step_order INT(6) NOT NULL,
-    FOREIGN KEY (recipe_id) REFERENCES recipe(ID) ON DELETE CASCADE,
-    FOREIGN KEY (cooking_steps_id) REFERENCES cooking_steps(ID) ON DELETE CASCADE,
-    UNIQUE KEY (recipe_id, cooking_steps_id, step_order)
+CREATE TABLE Recipe_CookingStep (
+    RecipeId INT(6) NOT NULL,
+    CookingStepId INT(6) NOT NULL,
+    StepOrder INT(6) NOT NULL,
+    FOREIGN KEY (RecipeId) REFERENCES Recipe(RecipeId) ON DELETE CASCADE,
+    FOREIGN KEY (CookingStepId) REFERENCES CookingStep(CookingStepId) ON DELETE CASCADE,
+    UNIQUE KEY (RecipeId, CookingStepId, StepOrder)
 );
