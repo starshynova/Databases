@@ -40,6 +40,23 @@ const create_table_author_paper_query = `CREATE TABLE IF NOT EXISTS author_paper
     FOREIGN KEY (paper_id) REFERENCES research_Papers(paper_id)
     )`;
 
+const insert_authors_query = `INSERT INTO authors (author_name, university, date_of_birth, h_index, gender, mentor) VALUES 
+    ('John Doe', 'Harvard', 1980-05-15, 35, 'Male', (SELECT author_id FROM authors WHERE author_name = 'Alice Green')),
+    ('Jane Smith', 'Stanford', 1985-03-10, 42, 'Female', (SELECT author_id FROM authors WHERE author_name = 'John Doe')),
+    ('Alice Green', 'MIT', 1990-07-22, 28, 'Female', (SELECT author_id FROM authors WHERE author_name = 'Jane Smith')),
+    ('Michael Brown', 'Cambridge', 1975-11-30, 50, 'Male'),
+    ('Emily White', 'Harvard', 1992-04-05, 18, 'Female', (SELECT author_id FROM authors WHERE author_name = 'John Doe')),
+    ('Robert Black', 'Oxford', 1983-08-19, 40, 'Male', (SELECT author_id FROM authors WHERE author_name = 'Michael Brown')),
+    ('Sophia Johnson', 'Stanford', 1989-01-25, 30, 'Female', (SELECT author_id FROM authors WHERE author_name = 'Jane Smith')),
+    ('Daniel Martinez', 'MIT', 1982-03-17, 37, 'Male', (SELECT author_id FROM authors WHERE author_name = 'Alice Green')),
+    ('Olivia Brown', 'Cambridge', 1995-12-14, 15, 'Female', SELECT author_id FROM authors WHERE author_name = 'Michael Brown')),
+    ('James Wilson', 'Oxford', 1987-07-10, 25, 'Male', (SELECT author_id FROM authors WHERE author_name = 'Robert Black')),
+    ('Isabella Clark', 'Harvard', 1994-09-23, 22, 'Female', (SELECT author_id FROM authors WHERE author_name = 'John Doe')),
+    ('Liam Walker', 'Stanford', 1990-06-18, 33, 'Male', (SELECT author_id FROM authors WHERE author_name = 'Jane Smith')),
+    ('Mia Hall', 'Cambridge', 1986-02-11, 38, 'Female', (SELECT author_id FROM authors WHERE author_name = 'Emily White')),
+    ('Noah Lee', 'MIT', 1993-11-08, 20, 'Male', (SELECT author_id FROM authors WHERE author_name = 'Daniel Martinez')),
+    ('Amelia Young', 'Oxford', 1981-05-21, 45, 'Female')`;  
+
 try {
     await connection.query(create_database_query);
     await connection.query(use_database_query);
