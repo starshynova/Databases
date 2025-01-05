@@ -19,7 +19,7 @@ const create_table_authors_query = `CREATE TABLE authors(
   gender VARCHAR(100)
 )`;
 
-const drop_table_author_mentor_query = `DROP TABLE IF EXISTS mentor`;
+const drop_table_author_mentor_query = `DROP TABLE IF EXISTS author_mentor`;
 const create_table_author_mentor_query = `CREATE TABLE author_mentor(
     author_id INT NOT NULL,
     mentor_id INT NOT NULL,
@@ -31,8 +31,8 @@ const create_table_author_mentor_query = `CREATE TABLE author_mentor(
 try {
     await connection.query(create_database_query);
     await connection.query(use_database_query);
-    await connection.query(drop_table_authors_query);
     await connection.query(drop_table_author_mentor_query);
+    await connection.query(drop_table_authors_query);
     await connection.query(create_table_authors_query);
     await connection.query(create_table_author_mentor_query);
 } catch (err) {
