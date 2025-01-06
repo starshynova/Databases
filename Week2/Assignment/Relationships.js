@@ -31,6 +31,10 @@ const create_table_author_mentor_query = `CREATE TABLE author_mentor(
     FOREIGN KEY (author_id) REFERENCES authors(author_id) ON DELETE CASCADE,
     FOREIGN KEY (mentor_id) REFERENCES authors(author_id) ON DELETE CASCADE)
 `;
+
+const add_column_mentor_query = `ALTER TABLE authors ADD COLUMN mentor_id INT,
+    ADD FOREIGN KEY (mentor_id) REFERENCES author_mentor(mentor_id) ON DELETE CASCADE`;
+
 const create_table_research_papers_query = `CREATE TABLE research_Papers(
   paper_id INT AUTO_INCREMENT PRIMARY KEY,
   paper_title VARCHAR(255) NOT NULL,
@@ -148,6 +152,7 @@ try {
     await connection.query(drop_table_authors_query);
     await connection.query(create_table_authors_query);
     await connection.query(create_table_author_mentor_query);
+    await connection.query(add_column_mentor_query);
     await connection.query(create_table_research_papers_query);
     await connection.query(create_table_author_paper_query);
     await connection.query(insert_authors_query);
