@@ -9,6 +9,8 @@ const connection = await createConnection({
 const create_database_query = `CREATE DATABASE IF NOT EXISTS papers`;
 const use_database_query = `USE papers`;
 
+const drop_foreign_key_authors_query = `ALTER TABLE authors DROP FOREIGN KEY authors_ibfk_1`;
+const drop_column_mentor_query = `ALTER TABLE authors DROP COLUMN mentor_id`;
 const drop_table_authors_query = `DROP TABLE IF EXISTS authors`;
 const drop_table_author_mentor_query = `DROP TABLE IF EXISTS author_mentor`;
 const drop_table_research_papers_query = `DROP TABLE IF EXISTS research_Papers`;
@@ -108,6 +110,15 @@ const insert_author_mentor_query = `INSERT INTO author_mentor (author_id, mentor
      (SELECT author_id FROM authors WHERE author_name = 'Sophia Johnson'))
 `; 
 
+const update_mentor_column_in_authors_query = `UPDATE authors SET mentor_id = 
+    (SELECT mentor_id FROM author_mentor WHERE author_id = authors.author_id)`;
+
+const add_column_mentor_name_query = `ALTER TABLE authors ADD COLUMN mentor_name VARCHAR(255)`; 
+
+const update_mentor_name_in_authors_query = `UPDATE authors AS a
+    LEFT JOIN author_mentor AS a_m ON a.author_id = a_m.author_id
+    LEFT JOIN authors AS m ON a_m.mentor_id = m.author_id
+    SET a.mentor_name = m.author_name`;
 
 const insert_research_papers_query = `INSERT INTO research_Papers (paper_title, conference, publish_date) VALUES
     ('Deep Learning Advances', 'ICML', '2021-09-10'),
@@ -146,6 +157,8 @@ const insert_research_papers_query = `INSERT INTO research_Papers (paper_title, 
 try {
     await connection.query(create_database_query);
     await connection.query(use_database_query);
+    await connection.query(drop_foreign_key_authors_query);
+    await connection.query(drop_column_mentor_query);
     await connection.query(drop_table_author_paper_query);
     await connection.query(drop_table_research_papers_query);
     await connection.query(drop_table_author_mentor_query);
@@ -157,9 +170,14 @@ try {
     await connection.query(create_table_author_paper_query);
     await connection.query(insert_authors_query);
     await connection.query(insert_author_mentor_query);
+    await connection.query(update_mentor_column_in_authors_query);
+    await connection.query(add_column_mentor_name_query);
+    await connection.query(update_mentor_name_in_authors_query);
     await connection.query(insert_research_papers_query);
 } catch (err) {
     console.error('Error connection', err);
 } finally {
     connection.end();
 };
+
+
