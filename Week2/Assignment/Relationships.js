@@ -48,8 +48,8 @@ const create_table_author_paper_query = `CREATE TABLE IF NOT EXISTS author_paper
     author_id INT,
     paper_id INT,
     UNIQUE KEY (author_id, paper_id),
-    FOREIGN KEY (author_id) REFERENCES authors(author_id),
-    FOREIGN KEY (paper_id) REFERENCES research_Papers(paper_id)
+    FOREIGN KEY (author_id) REFERENCES authors(author_id) ON DELETE CASCADE,
+    FOREIGN KEY (paper_id) REFERENCES research_Papers(paper_id) ON DELETE CASCADE
     )`;
 
 const insert_authors_query = `INSERT INTO authors (author_name, university, date_of_birth, h_index, gender) VALUES 
@@ -153,7 +153,30 @@ const insert_research_papers_query = `INSERT INTO research_Papers (paper_title, 
     ('Autonomous Drone Navigation', 'IROS', '2018-09-05')
 `;
 
+const insert_author_paper_query = `INSERT INTO author_paper (author_id, paper_id) VALUES
+    ((SELECT author_id FROM authors WHERE author_name = 'John Doe'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Deep Learning Advances')),
+    ((SELECT author_id FROM authors WHERE author_name = 'John Doe'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Quantum Computing Innovations')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Jane Smith'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Blockchain for Supply Chains')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Jane Smith'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Neural Networks in Medicine')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Alice Green'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Climate Change Modeling')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Alice Green'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Advances in Robotics')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Michael Brown'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Ethical AI')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Michael Brown'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Renewable Energy Innovations')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Emily White'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Deep Learning Advances')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Emily White'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Genetic Algorithms in Biology')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Robert Black'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Neural Networks in Medicine')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Robert Black'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Human-Computer Interaction Design')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Sophia Johnson'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Space Exploration and AI')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Sophia Johnson'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Cybersecurity in IoT')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Daniel Martinez'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Machine Learning in Healthcare')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Daniel Martinez'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Deep Learning Advances')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Olivia Brown'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Advances in Cryptography')),
+    ((SELECT author_id FROM authors WHERE author_name = 'James Wilson'), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Bioinformatics Tools')),
+    ((SELECT author_id FROM authors WHERE author_name = 'Isabella Clark '), (SELECT paper_id FROM research_Papers WHERE paper_title = 'Self-Driving Cars'))
+`;
 
+
+export async function relationships(connection) {
 try {
     await connection.query(create_database_query);
     await connection.query(use_database_query);
@@ -174,10 +197,18 @@ try {
     await connection.query(add_column_mentor_name_query);
     await connection.query(update_mentor_name_in_authors_query);
     await connection.query(insert_research_papers_query);
+    await connection.query(insert_author_paper_query);
 } catch (err) {
+    console.error('Error connection', err);
+    throw err;
+};
+};
+
+try {
+    await relationships(connection);
+}
+catch (err) {
     console.error('Error connection', err);
 } finally {
     connection.end();
 };
-
-
