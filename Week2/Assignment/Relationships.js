@@ -22,7 +22,7 @@ const create_table_research_papers_query = `CREATE TABLE IF NOT EXISTS research_
 const create_table_author_paper_query = `CREATE TABLE IF NOT EXISTS author_paper(
     author_id INT,
     paper_id INT,
-    UNIQUE KEY (author_id, paper_id),
+    PRIMARY KEY (author_id, paper_id),
     FOREIGN KEY (author_id) REFERENCES authors(author_id) ON DELETE CASCADE,
     FOREIGN KEY (paper_id) REFERENCES research_papers(paper_id) ON DELETE CASCADE
     )`;
