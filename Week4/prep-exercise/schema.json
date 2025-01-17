@@ -1,0 +1,59 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "Recipe",
+    "properties": {
+        "_id": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$"
+        },
+        "RecipeName": {
+            "type": "string"
+        },
+        "RecipeDiscription": {
+            "type": "string"
+        },
+        "Ingredients": {
+            "type": "array",
+            "additionalItems": true,
+            "items": [
+                {
+                    "type": "object"
+                },
+                {
+                    "type": "object"
+                }
+            ],
+            "uniqueItems": false
+        },
+        "Category": {
+            "type": "array",
+            "additionalItems": true,
+            "items": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "string"
+                }
+            ],
+            "uniqueItems": false
+        },
+        "CookingStep": {
+            "type": "array",
+            "additionalItems": true,
+            "items": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "string"
+                }
+            ],
+            "uniqueItems": false
+        },
+        "CookingTIme": {
+            "type": "string"
+        }
+    }
+}
