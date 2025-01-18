@@ -48,11 +48,12 @@ export async function insertData() {
             ]}
         ])
 
-
+        console.log("Data inserted successfully!");
     } catch (error) {   
-        console.error("Error querying data:", error)
+        console.error("Error data insert:", error)
     } finally { 
        await client.close();
     }
-}
+};
+
 
