@@ -3,8 +3,6 @@ import dotenv from "dotenv";
 import fs from "fs";
 import csvParser from "csv-parser";
 
-// const dbName = "assignmentWeek4-Aggregation";
-// const collectionName = "aggregation";
 dotenv.config();
 const client = new MongoClient(process.env.MONGODB_URL, {
     useNewUrlParser: true,
