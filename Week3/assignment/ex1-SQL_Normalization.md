@@ -35,7 +35,11 @@ No entity could be extracted.
 - dinner_id PRIMARY KEY
 - dinner_date
 - venue_code
+
+### Dinner-Member
+- dinner_id
 - member_id
+PRIMARY KEY (dinner_id, member_id)
 
 ### Venue
 - venue_code PRIMARY KEY
