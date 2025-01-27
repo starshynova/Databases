@@ -105,7 +105,7 @@ async function updateEpisodeExercises(client) {
   // Update all of the documents in the collection that have `BUSHES` in the elements array to now have `BUSH`
   // It should update 120 episodes!
 
-  const updateBush = await collection.updateMany({elements: "BUSHES"}, {$set: {elements: "BUSH"}});
+  const updateBush = await collection.updateMany({elements: "BUSHES"}, { $set: { "elements.$": "BUSH" } });
   
   console.log(
     `Ran a command to update all the BUSHES to BUSH and it updated ${updateBush.title} episodes`
