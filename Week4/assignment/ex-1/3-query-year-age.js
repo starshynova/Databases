@@ -15,7 +15,8 @@ async function queryYearAge(year, age) {
         const collection = db.collection("aggregation");
     
         const yearAgePopulation = await collection.aggregate([
-            {$match: {Year: year, Age:  age}},
+            {$match: {Country: { $in: ["AFRICA", "ASIA", 'EUROPE', "LATIN AMERICA AND THE CARIBBEAN", "NORTHERN AMERICA", "OCEANIA"]},
+             Year: year, Age:  age}},
             {$addFields: {
                 TotalPopulation: { $add: ["$M", "$F"] },
             }},  
